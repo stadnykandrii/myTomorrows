@@ -9,14 +9,10 @@ const testData = {
   validPassword: '20testPASS!',
   invalidPassword: 'testPASS',
   htcInUse: '5711887014',
-  emailInUse: 'm6zva13or1@onzczbfc.mailosaur.net'
+  emailInUse: '6pgtqxiezs@onzczbfc.mailosaur.net'
 }
 
-function createNewHTC(length: number): string {
-  if (length < 1) {
-    throw new Error('Length must be greater than 0');
-  }
-
+function createHCP(length: number): string {
   let result = '';
   for (let i = 0; i < length; i++) {
     const randomDigit = Math.floor(Math.random() * 10);
@@ -26,11 +22,7 @@ function createNewHTC(length: number): string {
   return result;
 }
 
-function generateNewEmail(length: number): string {
-  if (length < 1) {
-    throw new Error('Length must be greater than 0');
-  }
-
+function generateEmail(length: number): string {
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
   const charactersLength = characters.length;
@@ -43,7 +35,7 @@ function generateNewEmail(length: number): string {
   return result;
 }
 
-const newHTC = createNewHTC(10);
+const htc = createHCP(10);
 
 const serverId = "onzczbfc";
 
@@ -55,8 +47,8 @@ test.describe('Real email verification', () =>{
   })
 
   test('Verification page is available', async ({ page }) => {
-    const newEmail = generateNewEmail(10);
-    const testEmailAddress = `${newEmail}@${serverId}.mailosaur.net`;
+    const emailPrefix = generateEmail(10);
+    const testEmailAddress = `${emailPrefix}@${serverId}.mailosaur.net`;
     await page.locator('#mat-input-0').fill(testEmailAddress);
     await page.locator('#mat-input-1').fill(testEmailAddress);
     await page.getByPlaceholder('First name').fill(testData.validFirstName);
@@ -68,8 +60,8 @@ test.describe('Real email verification', () =>{
   });
 
   test ('Verification email is received', async ({ page }) => {
-    const newEmail = generateNewEmail(10);
-    const testEmailAddress = `${newEmail}@${serverId}.mailosaur.net`;
+    const emailPrefix = generateEmail(10);
+    const testEmailAddress = `${emailPrefix}@${serverId}.mailosaur.net`;
     await page.locator('#mat-input-0').fill(testEmailAddress);
     await page.locator('#mat-input-1').fill(testEmailAddress);
     await page.getByPlaceholder('First name').fill(testData.validFirstName);
@@ -84,8 +76,8 @@ test.describe('Real email verification', () =>{
   });
 
   test ('Successfull account verification', async ({ page }) => {
-    const newEmail = generateNewEmail(10);
-    const testEmailAddress = `${newEmail}@${serverId}.mailosaur.net`;
+    const emailPrefix = generateEmail(10);
+    const testEmailAddress = `${emailPrefix}@${serverId}.mailosaur.net`;
     await page.locator('#mat-input-0').fill(testEmailAddress);
     await page.locator('#mat-input-1').fill(testEmailAddress);
     await page.getByPlaceholder('First name').fill(testData.validFirstName);
@@ -101,8 +93,8 @@ test.describe('Real email verification', () =>{
   });
 
   test ('Invalid password setup', async ({ page }) => {
-    const newEmail = generateNewEmail(10);
-    const testEmailAddress = `${newEmail}@${serverId}.mailosaur.net`;
+    const emailPrefix = generateEmail(10);
+    const testEmailAddress = `${emailPrefix}@${serverId}.mailosaur.net`;
     await page.locator('#mat-input-0').fill(testEmailAddress);
     await page.locator('#mat-input-1').fill(testEmailAddress);
     await page.getByPlaceholder('First name').fill(testData.validFirstName);
@@ -120,8 +112,8 @@ test.describe('Real email verification', () =>{
   });
 
   test ('Valid password setup', async ({ page }) => {
-    const newEmail = generateNewEmail(10);
-    const testEmailAddress = `${newEmail}@${serverId}.mailosaur.net`;
+    const emailPrefix = generateEmail(10);
+    const testEmailAddress = `${emailPrefix}@${serverId}.mailosaur.net`;
     await page.locator('#mat-input-0').fill(testEmailAddress);
     await page.locator('#mat-input-1').fill(testEmailAddress);
     await page.getByPlaceholder('First name').fill(testData.validFirstName);
@@ -141,8 +133,8 @@ test.describe('Real email verification', () =>{
   });
 
   test ('Compleating account setup with HPC number that is already in use', async ({ page }) => {
-    const newEmail = generateNewEmail(10);
-    const testEmailAddress = `${newEmail}@${serverId}.mailosaur.net`;
+    const emailPrefix = generateEmail(10);
+    const testEmailAddress = `${emailPrefix}@${serverId}.mailosaur.net`;
     await page.locator('#mat-input-0').fill(testEmailAddress);
     await page.locator('#mat-input-1').fill(testEmailAddress);
     await page.getByPlaceholder('First name').fill(testData.validFirstName);
@@ -190,8 +182,8 @@ test.describe('Real email verification', () =>{
   });
 
   test ('Complete account setup', async ({ page }) => {
-    const newEmail = generateNewEmail(10);
-    const testEmailAddress = `${newEmail}@${serverId}.mailosaur.net`;
+    const emailPrefix = generateEmail(10);
+    const testEmailAddress = `${emailPrefix}@${serverId}.mailosaur.net`;
     await page.locator('#mat-input-0').fill(testEmailAddress);
     await page.locator('#mat-input-1').fill(testEmailAddress);
     await page.getByPlaceholder('First name').fill(testData.validFirstName);
@@ -212,7 +204,7 @@ test.describe('Real email verification', () =>{
     await page.getByRole('option', { name: 'Cardiology' }).locator('span').first().click();
     await page.locator('#mat-select-value-5').click();
     await page.getByRole('option', { name: 'Ukraine' }).locator('span').first().click();
-    await page.getByPlaceholder('12345678').fill(newHTC);
+    await page.getByPlaceholder('12345678').fill(htc);
     await page.getByLabel('Yes').check();
     await page.getByRole('button', { name: 'Complete setup' }).click();
     await page.waitForTimeout(3000);
